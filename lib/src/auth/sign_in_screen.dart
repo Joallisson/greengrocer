@@ -27,20 +27,53 @@ class SignInScreen extends StatelessWidget {
               )
             ),
 
-            child: Column(children: [
-              //Email
-              CustomTextField(
-                icon: Icons.email,
-                label: 'Email',
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+              
+                //Email
+                const CustomTextField(
+                  icon: Icons.email,
+                  label: 'Email',
+                ),
 
-              //Senha
-              CustomTextField(
-                icon: Icons.lock,
-                label: 'Senha',
-                isSecret: true,
-              ),
-            ],),
+                //Senha
+                const CustomTextField(
+                  icon: Icons.lock,
+                  label: 'Senha',
+                  isSecret: true,
+                ),
+
+                SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)
+                      )
+                    ),
+                    onPressed: (){}, 
+                    child: const Text("Entrar", 
+                      style: TextStyle(
+                        fontSize: 18
+                      ),
+                    ),
+                  ),
+                ),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: (){}, 
+                    child: const Text("Esqueceu a senha?",
+                    style: TextStyle(
+                      color: Colors.red
+                    ),)
+                  ),
+                ),
+
+              ],
+            ),
           ))
         ]
         ),
