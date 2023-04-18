@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../config/custom_colors.dart';
 import 'components/custom_text_field.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: CustomColors.customSwatchColor,
       body: Column(children: [
         Expanded(
           child: Column(
@@ -18,13 +19,13 @@ class SignInScreen extends StatelessWidget {
             children: [
 
               //Nome do app
-              const Text.rich(
+              Text.rich(
                 TextSpan(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 40
                   ),
                   children: [
-                    TextSpan(
+                    const TextSpan(
                       text: "Green",
                       style: TextStyle(
                         color: Colors.white,
@@ -34,7 +35,7 @@ class SignInScreen extends StatelessWidget {
                     TextSpan(
                       text: "grocer",
                       style: TextStyle(
-                        color: Colors.red,
+                        color: CustomColors.customContrastColor,
                       )
                     )
                   ]
@@ -45,7 +46,7 @@ class SignInScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
                 child: DefaultTextStyle(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25
                   ),
                   child: AnimatedTextKit(
@@ -108,9 +109,9 @@ class SignInScreen extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                   onPressed: () {},
-                  child: const Text(
+                  child: Text(
                     "Esqueceu a senha?",
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: CustomColors.customContrastColor),
                   )),
             ),
 
