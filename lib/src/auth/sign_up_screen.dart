@@ -11,8 +11,10 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
       body: Column(
-        children: const [
-          Expanded(
+        children: [
+
+          //TÍTULO CADASTRO
+          const Expanded(
             child: Center(
               child: Text(
                 "Cadastro", 
@@ -21,6 +23,20 @@ class SignUpScreen extends StatelessWidget {
                   fontSize: 35
                 ),
               ),
+            ),
+          ),
+
+          //FORMULÁRIO
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 32,
+              vertical: 40
+            ),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(45)
+              )
             ),
           )
       ],),
