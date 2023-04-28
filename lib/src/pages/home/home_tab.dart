@@ -13,14 +13,6 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   String selectedCategory = "Frutas";
 
-  List<String> categories = [
-    "Frutas",
-    "Grãos",
-    "Verduras",
-    "Temperos",
-    "Cereais",
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
