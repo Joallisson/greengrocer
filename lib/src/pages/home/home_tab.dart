@@ -3,6 +3,8 @@ import 'package:greengrocer/src/config/custom_colors.dart';
 import 'components/category_tile.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 
+import 'components/item_tile.dart';
+
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -112,8 +114,8 @@ class _HomeTabState extends State<HomeTab> {
               ),
               itemCount: app_data.items.length,
               itemBuilder: (_,index){
-                return Container(
-                  color: Colors.red,
+                return ItemTile(
+                  item: app_data.items[index],
                 );
               }
             ),
