@@ -2,58 +2,69 @@ import 'package:flutter/material.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 
 class QuantityWidget extends StatelessWidget {
-  const QuantityWidget({super.key});
+  final int value;
+  final String suffixText;
+  final Function(int quantity) result;
+
+  const QuantityWidget({
+    required this.value,
+    required this.suffixText,
+    required this.result,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(50),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            spreadRadius: 1,
-            blurRadius: 2,
-          )
-        ]
-      ),
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(50),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade300,
+                spreadRadius: 1,
+                blurRadius: 2,
+              )
+            ]),
+        child: Row(
+          children: [
 
-      child: Row(
-        children: [
+            //BOTÃO DE DIMINUIR
+            _QuantityButton(
+              icon: Icons.remove,
+              color: Colors.grey,
+              onPressed: () {
+                if(value == 1) return;
 
-          _QuantityButton(
-            icon: Icons.remove,
-            color: Colors.grey,
-            onPressed: (){},
-          ),
+                int resultCount = value - 1;
+                result(resultCount);
+              },
+            ),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              "1kg",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                "$value$suffixText",
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
-          ),
 
-          _QuantityButton(
-            icon: Icons.add,
-            color: CustomColors.customSwatchColor,
-            onPressed: (){},
-          ),
-
-        ],
-      )
-    );
+            //BOTÃO DE SOMAR
+            _QuantityButton(
+              icon: Icons.add,
+              color: CustomColors.customSwatchColor,
+              onPressed: () {
+                int resultCount = value + 1;
+                result(resultCount);
+              },
+            ),
+          ],
+        ));
   }
 }
 
 class _QuantityButton extends StatelessWidget {
-
   final Color color;
   final IconData icon;
   final VoidCallback onPressed;
