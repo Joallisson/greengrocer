@@ -95,8 +95,6 @@ class _CartTabState extends State<CartTab> {
                       ),
                       onPressed: () async {
                         bool? result = await showOrderConfirmation();
-
-                        print(result);
                       },
                       child: const Text(
                         "Concluir pedido",
