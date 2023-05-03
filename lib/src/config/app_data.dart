@@ -103,7 +103,10 @@ List<OrderModel> orders = [
     id: "u3235iuoUOU8786IllKnbnb",
     createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
     overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
-    items: [CartItemModel(item: apple, quantity: 2)],
+    items: [
+      CartItemModel(item: apple, quantity: 2),
+      CartItemModel(item: mango, quantity: 2),
+    ],
     status: "pending_payment",
     copyAndPaste: "qwyhvJHVhvJH676",
     total: 11,
