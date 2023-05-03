@@ -101,8 +101,8 @@ UserModel user = UserModel(
 List<OrderModel> orders = [
   OrderModel(
     id: "u3235iuoUOU8786IllKnbnb",
-    createdDateTime: DateTime.parse('2021-06-08  10:00:10:458'),
-    overdueDateTime: DateTime.parse('2021-06-08  11:00:10:458'),
+    createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
+    overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
     items: [CartItemModel(item: apple, quantity: 2)],
     status: "pending_payment",
     copyAndPaste: "qwyhvJHVhvJH676",
