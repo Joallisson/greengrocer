@@ -121,7 +121,7 @@ List<OrderModel> orders = [
     items: [
       CartItemModel(item: guava, quantity: 1),
     ],
-    status: "pending_payment",
+    status: "refunded",
     copyAndPaste: "qwyhvJHVhvJH676",
     total: 11,
   ),

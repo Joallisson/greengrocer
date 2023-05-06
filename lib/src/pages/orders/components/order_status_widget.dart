@@ -6,22 +6,61 @@ class OrderStatusWidget extends StatelessWidget {
   final String status;
   final bool isOverdue;
 
-  const OrderStatusWidget(
-      {super.key, required this.isOverdue, required this.status});
+  final Map<String, int> allStatus = <String, int>{
+    "pending_payment": 0,
+    "refunded": 1,
+    "paid": 2,
+    "preparing_purchase": 3,
+    "shipping": 4,
+    "delivered": 5,
+  };
+
+  int get currentStatus => allStatus[status]!;
+
+  OrderStatusWidget({
+    super.key,
+    required this.isOverdue,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _StatusDot(
+        const _StatusDot(
           isActive: true,
-          title: "Teste de pagamento",
+          title: "Pedido confirmado",
         ),
-        _StatusDot(
-          isActive: false,
-          title: "Pagamento efetuado",
-        ),
+        const _CustomDivider(),
+        if (currentStatus == 1) ...[
+          const _StatusDot(
+            isActive: true,
+            title: "Pix estornado",
+            backgroundColor: Colors.orange,
+          )
+        ] else if (isOverdue) ...[
+          const _StatusDot(
+            isActive: true,
+            title: "Pagamento pix vencido",
+            backgroundColor: Colors.red,
+          )
+        ],
       ],
+    );
+  }
+}
+
+class _CustomDivider extends StatelessWidget {
+  const _CustomDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      height: 10,
+      width: 2,
+      color: Colors.grey.shade300,
     );
   }
 }
@@ -29,10 +68,12 @@ class OrderStatusWidget extends StatelessWidget {
 class _StatusDot extends StatelessWidget {
   final bool isActive;
   final String title;
+  final Color? backgroundColor;
 
   const _StatusDot({
     required this.isActive,
     required this.title,
+    this.backgroundColor,
     super.key,
   });
 
@@ -47,9 +88,11 @@ class _StatusDot extends StatelessWidget {
           width: 20,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: CustomColors.customSwatchColor),
-            color:
-                isActive ? CustomColors.customSwatchColor : Colors.transparent,
+            border: Border.all(
+                color: backgroundColor ?? CustomColors.customSwatchColor),
+            color: isActive
+                ? backgroundColor ?? CustomColors.customSwatchColor
+                : Colors.transparent,
           ),
           child: isActive
               ? const Icon(
@@ -61,11 +104,16 @@ class _StatusDot extends StatelessWidget {
         ),
 
         //ESPAÇAMENTO
-        const SizedBox(width: 5,),
+        const SizedBox(
+          width: 5,
+        ),
 
         //Texto
         Expanded(
-          child: Text(title),
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 12),
+          ),
         )
       ],
     );
