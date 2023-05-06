@@ -36,12 +36,11 @@ class OrderTile extends StatelessWidget {
                   ),
                 )
               ]),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IntrinsicHeight(
-
               child: Row(
                 children: [
-            
                   //LISTA DE PRODUTOS
                   Expanded(
                     flex: 3,
@@ -57,25 +56,58 @@ class OrderTile extends StatelessWidget {
                       ),
                     ),
                   ),
-            
+
                   //DIVISÃO
                   VerticalDivider(
                     color: Colors.grey.shade300,
                     thickness: 2,
                     width: 8,
                   ),
-            
+
                   //STATUS DO PEDIDO
                   Expanded(
                       flex: 2,
                       child: OrderStatusWidget(
                         status: order.status,
-                        isOverdue: order.overdueDateTime.isBefore(DateTime.now()),
-                      )
-                  ),
+                        isOverdue:
+                            order.overdueDateTime.isBefore(DateTime.now()),
+                      )),
                 ],
               ),
-            )
+            ),
+
+            //VALOR TOTAL
+            Text.rich(
+              TextSpan(style: const TextStyle(fontSize: 20), children: [
+                const TextSpan(
+                  text: "Total ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: utilsServices.priceToCurrency(order.total),
+                )
+              ]),
+            ),
+
+            //BOTÃO DE PAGAMENTO
+            Visibility(
+              visible: order.status == "pending_payment",
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                  )
+                ),
+                icon: Image.asset(
+                  "assets/app_images/pix.png",
+                  height: 18,
+                ),
+                label: const Text("Ver QR Code Pix"),
+              ),
+            ),
           ],
         ),
       ),

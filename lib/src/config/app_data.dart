@@ -150,7 +150,7 @@ List<OrderModel> orders = [
       CartItemModel(item: apple, quantity: 2),
       CartItemModel(item: mango, quantity: 2),
     ],
-    status: "pending_payment",
+    status: "shipping",
     copyAndPaste: "qwyhvJHVhvJH676",
     total: 11,
   ),
