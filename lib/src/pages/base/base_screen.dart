@@ -32,35 +32,33 @@ class _BaseScreenState extends State<BaseScreen> {
 
       //BOTTOM NAVIGATION BAR
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index){
-          setState(() {
-            currentIndex = index;
-            pageController.jumpToPage(index);
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.green,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white.withAlpha(100),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: "Home"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: "Carrinho",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: "Pedidos"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: "Perfil"
-          )
-        ]),
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+              //pageController.jumpToPage(index);
+              pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds:  500),
+                curve: Curves.easeInOutQuart,
+              );
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.green,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white.withAlpha(100),
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined), label: "Home"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_outlined),
+              label: "Carrinho",
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: "Pedidos"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline), label: "Perfil")
+          ]),
     );
   }
 }
