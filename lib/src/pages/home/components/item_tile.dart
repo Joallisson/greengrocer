@@ -7,11 +7,15 @@ import '../../../services/utils_services.dart';
 
 class ItemTile extends StatelessWidget {
   final ItemModel item;
+  final Function(GlobalKey) cartAnimationMethod;
 
   ItemTile({
     required this.item,
+    required this.cartAnimationMethod,
     super.key,
   });
+
+  final GlobalKey imageGK = GlobalKey();
 
   final UtilsServices utilsServices = UtilsServices();
 
@@ -19,19 +23,17 @@ class ItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-
         //Conteúdo
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (contxt) => ProductScreen(item: item))
-            );
+                builder: (contxt) => ProductScreen(item: item)));
           },
           child: Card(
             elevation: 1,
             shadowColor: Colors.grey.shade300,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
@@ -41,10 +43,13 @@ class ItemTile extends StatelessWidget {
                   Expanded(
                     child: Hero(
                       tag: item.imgUrl,
-                      child: Image.asset(item.imgUrl)
-                    )
+                      child: Image.asset(
+                        item.imgUrl,
+                        key: imageGK,
+                      ),
+                    ),
                   ),
-            
+
                   //Nome
                   Text(
                     item.itemName,
@@ -53,7 +58,7 @@ class ItemTile extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-            
+
                   //Preço - Unidade
                   Row(
                     children: [
@@ -68,10 +73,9 @@ class ItemTile extends StatelessWidget {
                       Text(
                         "/${item.unit}",
                         style: TextStyle(
-                          color: Colors.grey.shade500,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12
-                        ),
+                            color: Colors.grey.shade500,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12),
                       )
                     ],
                   )
@@ -86,25 +90,25 @@ class ItemTile extends StatelessWidget {
           top: 4,
           right: 4,
           child: GestureDetector(
-            onTap: (){},
+            onTap: () {
+              cartAnimationMethod(imageGK);
+            },
             child: Container(
               height: 40,
               width: 35,
               decoration: BoxDecoration(
-                color: CustomColors.customSwatchColor,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(15),
-                  topRight: Radius.circular(20)
-                )
-              ),
+                  color: CustomColors.customSwatchColor,
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      topRight: Radius.circular(20))),
               child: const Icon(
                 Icons.add_shopping_cart_outlined,
                 color: Colors.white,
                 size: 20,
               ),
             ),
-          )
-        )
+          ),
+        ),
       ],
     );
   }
