@@ -9,7 +9,9 @@ import '../base/base_screen.dart';
 import '../commom_widgets/custom_text_field.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,107 +68,123 @@ class SignInScreen extends StatelessWidget {
               decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(45))),
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                //Email
-                const CustomTextField(
-                  icon: Icons.email,
-                  label: 'Email',
-                ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  //Email
+                  CustomTextField(
+                    icon: Icons.email,
+                    label: 'Email',
+                    validator: (email){
               
-                //Senha
-                const CustomTextField(
-                  icon: Icons.lock,
-                  label: 'Senha',
-                  isSecret: true,
-                ),
+                      if(email == null || email.isEmpty) return 'Digite seu email!';
               
-                //Botão Entrar
-                SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18))),
-                    onPressed: () {
-
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (contxt){
-                            return const BaseScreen();
-                          }
-                        )
-                      );
-
-                      Get.offNamed(PagesRoutes.baseRoute);
+                      if (!email.isEmail) return 'Digite um email válido';
+              
+                      return null;
+              
                     },
-                    child: const Text(
-                      "Entrar",
-                      style: TextStyle(fontSize: 18),
+                  ),
+                
+                  //Senha
+                  CustomTextField(
+                    icon: Icons.lock,
+                    label: 'Senha',
+                    isSecret: true,
+                    validator: (password){
+              
+                      if(password == null || password.isEmpty) return 'Digite sua senha!';
+              
+                      if(password.length < 7) return 'Digite uma senha com pelo menos 7 caracteres';
+              
+                    },
+                  ),
+                
+                  //Botão Entrar
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18))),
+                      onPressed: () {
+
+                        if(_formKey.currentState!.validate()){
+                          print("Todos os campos estão válidos");
+                        }else{
+                          print('Campos não válidos');                        }
+
+                        // Get.offNamed(PagesRoutes.baseRoute);
+                      },
+                      child: const Text(
+                        "Entrar",
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
-                ),
-              
-                //Esqueceu a senha
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Esqueceu a senha?",
-                        style: TextStyle(color: CustomColors.customContrastColor),
-                      )),
-                ),
-              
-                //Divisor
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.withAlpha(90),
-                          thickness: 2,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text("Ou"),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.withAlpha(90),
-                          thickness: 2,
-                        ),
-                      ),
-                    ],
+                
+                  //Esqueceu a senha
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Esqueceu a senha?",
+                          style: TextStyle(color: CustomColors.customContrastColor),
+                        )),
                   ),
-                ),
-              
-                //Botão criar conta
-                SizedBox(
-                  height: 50,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18)
-                      ),
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.green
-                      )
+                
+                  //Divisor
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey.withAlpha(90),
+                            thickness: 2,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Text("Ou"),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey.withAlpha(90),
+                            thickness: 2,
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: (){
-                      Get.toNamed(PagesRoutes.signUpRoute);
-                    }, 
-                    child: const Text("Criar conta", style: TextStyle(
-                      fontSize: 18
-                    ),)
                   ),
+                
+                  //Botão criar conta
+                  SizedBox(
+                    height: 50,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18)
+                        ),
+                        side: const BorderSide(
+                          width: 2,
+                          color: Colors.green
+                        )
+                      ),
+                      onPressed: (){
+                        Get.toNamed(PagesRoutes.signUpRoute);
+                      }, 
+                      child: const Text("Criar conta", style: TextStyle(
+                        fontSize: 18
+                      ),)
+                    ),
+                  ),
+                
+                ],
                 ),
-              
-              ],
               ),
             )
           ]),
