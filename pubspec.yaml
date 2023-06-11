@@ -45,11 +45,14 @@ dependencies:
   shimmer: ^2.0.0
   get: ^4.6.5
   dio: ^5.2.0+1
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  json_serializable: ^6.6.2
+  build_runner: ^2.3.3
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
