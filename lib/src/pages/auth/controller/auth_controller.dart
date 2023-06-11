@@ -11,8 +11,6 @@ class AuthController extends GetxController{
 
     isLoading .value = true;
 
-    //await Future.delayed(const Duration(seconds: 2));
-
     await _authRepository.signIn(email: email, password: password);
 
     isLoading.value = false;
