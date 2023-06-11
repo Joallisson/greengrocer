@@ -18,6 +18,7 @@ class AuthRepository {
       print('signin funcionou');
     }else{
       print('signin não funcionou');
+      print(result);
     }
   }
 }
