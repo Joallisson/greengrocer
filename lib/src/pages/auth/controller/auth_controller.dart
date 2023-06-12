@@ -14,6 +14,14 @@ class AuthController extends GetxController {
 
   UserModel user = UserModel();
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+
+    validateToken();
+  }
+
   void saveTokenAndProceedToBase() {
     //Salvar o token
     utilsServices.saveLocalData(
@@ -56,8 +64,6 @@ class AuthController extends GetxController {
     //Ir para o login
     Get.offAllNamed(PagesRoutes.signInRoute);
   }
-
-
 
   Future<void> signIn({required String email, required String password}) async {
     isLoading.value = true;
