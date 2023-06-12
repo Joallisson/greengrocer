@@ -20,7 +20,7 @@ class _CartTabState extends State<CartTab> {
     setState(() {
       appData.cartItems.remove(cartItem);
       utilsServices.showToast(
-          context: context,
+          //context: context,
           message: "${cartItem.item.itemName} removido(a) do carrinho");
     });
   }
@@ -107,7 +107,7 @@ class _CartTabState extends State<CartTab> {
                           );
                         } else {
                           utilsServices.showToast(
-                            context: context,
+                            //context: context,
                             message: "Pedido não confirmado",
                             isError: true
                           );
