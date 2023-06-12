@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:greengrocer/src/constants/storage_keys.dart';
 import 'package:greengrocer/src/models/user_model.dart';
 import 'package:greengrocer/src/pages/auth/repository/auth_repository.dart';
 import 'package:greengrocer/src/pages/auth/result/auth_result.dart';
@@ -13,11 +14,50 @@ class AuthController extends GetxController {
 
   UserModel user = UserModel();
 
-  Future<void> validateToken() async{
-
-    //_authRepository.validateToken(token);
-
+  void saveTokenAndProceedToBase() {
+    //Salvar o token
+    utilsServices.saveLocalData(
+      key: StorageKeys.token,
+      data: user.token!,
+    );
+    //Ir para a tela base
+    Get.offAllNamed(PagesRoutes.baseRoute);
   }
+
+  Future<void> validateToken() async {
+    //Recuperar token que foi salvo localmente
+    String? token = await utilsServices.getLocalData(key: StorageKeys.token);
+
+    if (token == null) {
+      Get.offAllNamed(PagesRoutes.signInRoute);
+      return;
+    }
+
+    AuthResult result = await _authRepository.validateToken(token);
+
+    result.when(
+      success: (user){
+        this.user = user;
+        saveTokenAndProceedToBase();
+      },
+      error: (message){
+        signOut();
+      },
+    );
+  }
+
+  Future<void> signOut() async{
+    //Zerar o user
+    this.user = UserModel();
+
+    //Remover o token localmente
+    await utilsServices.removeLocalData(key: StorageKeys.token);
+
+    //Ir para o login
+    Get.offAllNamed(PagesRoutes.signInRoute);
+  }
+
+
 
   Future<void> signIn({required String email, required String password}) async {
     isLoading.value = true;
@@ -28,16 +68,12 @@ class AuthController extends GetxController {
     isLoading.value = false;
 
     result.when(
-      success: (user){
+      success: (user) {
         this.user = user;
-
-        Get.offAllNamed(PagesRoutes.baseRoute);
+        saveTokenAndProceedToBase();
       },
-      error: (message){
-        utilsServices.showToast(
-          message: message,
-          isError: true
-        );
+      error: (message) {
+        utilsServices.showToast(message: message, isError: true);
       },
     );
   }
