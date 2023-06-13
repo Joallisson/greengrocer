@@ -43,20 +43,22 @@ String? phoneValidator(String? phone){
     return 'Digite seu celular!';
   }
 
-  if (!phone.isPhoneNumber) {
+  if (!phone.isPhoneNumber || phone.length < 16) {
     return 'Digite um número válido';
   }
+
+  print(phone);
 
   return null;
 }
 
 String? cpfValidor(String? cpf){
   if (cpf == null || cpf.isEmpty) {
-    return 'Digite seu celular!';
+    return 'Digite seu cpf!';
   }
 
   if (!cpf.isCpf) {
-    return 'Digite seu cpf!';
+    return 'Digite um cpf válido!';
   }
 
   return null;

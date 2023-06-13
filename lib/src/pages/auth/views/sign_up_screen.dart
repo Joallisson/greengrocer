@@ -98,7 +98,7 @@ class SignUpScreen extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(28))),
                               onPressed: () {
-                                
+                                _formKey.currentState!.validate();
                               },
                               child: const Text(
                                 "Cadastrar Usuário",
