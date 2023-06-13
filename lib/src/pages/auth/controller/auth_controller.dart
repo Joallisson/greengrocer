@@ -44,17 +44,17 @@ class AuthController extends GetxController {
     AuthResult result = await _authRepository.validateToken(token);
 
     result.when(
-      success: (user){
+      success: (user) {
         this.user = user;
         saveTokenAndProceedToBase();
       },
-      error: (message){
+      error: (message) {
         signOut();
       },
     );
   }
 
-  Future<void> signOut() async{
+  Future<void> signOut() async {
     //Zerar o user
     this.user = UserModel();
 
@@ -63,6 +63,28 @@ class AuthController extends GetxController {
 
     //Ir para o login
     Get.offAllNamed(PagesRoutes.signInRoute);
+  }
+
+  Future<void> signUp() async {
+    isLoading.value = true;
+
+    AuthResult result = await _authRepository.signUp(user);
+
+    isLoading.value = true;
+
+    result.when(
+      success: (user) {
+        this.user = user;
+
+        saveTokenAndProceedToBase();
+      },
+      error: (message) {
+        utilsServices.showToast(
+          message: message,
+          isError: true,
+        );
+      },
+    );
   }
 
   Future<void> signIn({required String email, required String password}) async {
