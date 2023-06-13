@@ -32,6 +32,10 @@ class AuthController extends GetxController {
     Get.offAllNamed(PagesRoutes.baseRoute);
   }
 
+  Future<void> resetPassword(String email) async{
+    await _authRepository.resetPassword(email);
+  }
+
   Future<void> validateToken() async {
     //Recuperar token que foi salvo localmente
     String? token = await utilsServices.getLocalData(key: StorageKeys.token);

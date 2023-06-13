@@ -7,6 +7,7 @@ import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_text_field.dart';
+import 'package:greengrocer/src/services/utils_services.dart';
 import 'package:greengrocer/src/services/validators.dart' as validators;
 
 class SignInScreen extends StatelessWidget {
@@ -21,6 +22,8 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    final utilsServices =  UtilsServices();
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
@@ -127,13 +130,18 @@ class SignInScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                          onPressed: () {
-                            showDialog(
+                          onPressed: () async{
+                            final result = await showDialog(
                               context: context,
                               builder: (_){
                                 return ForgotPasswordDialog(email: emailController.text);
                               },
                             );
+
+                            if (result ?? false) {
+                              utilsServices.showToast(message: 'Um link de recuperação foi enviado para seu email.');
+                            }
+
                           },
                           child: Text(
                             "Esqueceu a senha?",
