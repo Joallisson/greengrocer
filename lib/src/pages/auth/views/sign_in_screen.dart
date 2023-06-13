@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
+import 'package:greengrocer/src/pages/auth/views/components/forgot_password_dialog.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
@@ -78,7 +79,6 @@ class SignInScreen extends StatelessWidget {
                       icon: Icons.email,
                       label: 'Email',
                       validator: validators.emailValidator,
-                        
                     ),
 
                     //Senha
@@ -99,25 +99,25 @@ class SignInScreen extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18))),
-                            onPressed: authController.isLoading.value 
-                              ? null
-                              : () {
+                            onPressed: authController.isLoading.value
+                                ? null
+                                : () {
+                                    FocusScope.of(context).unfocus();
 
-                                FocusScope.of(context).unfocus();
+                                    if (_formKey.currentState!.validate()) {
+                                      String email = emailController.text;
+                                      String password = passwordController.text;
 
-                                if (_formKey.currentState!.validate()) {
-                                  String email = emailController.text;
-                                  String password = passwordController.text;
-
-                                  authController.signIn(email: email, password: password);
-                                }
-                            },
-                            child: authController.isLoading.value 
-                            ? const CircularProgressIndicator() 
-                            : const Text(
-                              "Entrar",
-                              style: TextStyle(fontSize: 18),
-                            ),
+                                      authController.signIn(
+                                          email: email, password: password);
+                                    }
+                                  },
+                            child: authController.isLoading.value
+                                ? const CircularProgressIndicator()
+                                : const Text(
+                                    "Entrar",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
                           );
                         },
                       ),
@@ -127,7 +127,14 @@ class SignInScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (_){
+                                return ForgotPasswordDialog(email: emailController.text);
+                              },
+                            );
+                          },
                           child: Text(
                             "Esqueceu a senha?",
                             style: TextStyle(
