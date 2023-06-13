@@ -110,10 +110,7 @@ class SignInScreen extends StatelessWidget {
                                   String password = passwordController.text;
 
                                   authController.signIn(email: email, password: password);
-                                } else {
-                                  print('Campos não válidos');
                                 }
-                              // Get.offNamed(PagesRoutes.baseRoute);
                             },
                             child: authController.isLoading.value 
                             ? const CircularProgressIndicator() 

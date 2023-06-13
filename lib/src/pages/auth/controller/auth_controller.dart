@@ -70,7 +70,7 @@ class AuthController extends GetxController {
 
     AuthResult result = await _authRepository.signUp(user);
 
-    isLoading.value = true;
+    isLoading.value = false;
 
     result.when(
       success: (user) {
