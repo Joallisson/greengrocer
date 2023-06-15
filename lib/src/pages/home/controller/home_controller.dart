@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:greengrocer/src/config/app_data.dart';
 import 'package:greengrocer/src/models/category_model.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/home/repository/home_repository.dart';
@@ -16,6 +17,11 @@ class HomeController extends GetxController {
 
   List<CategoryModel> allCategories = [];
   CategoryModel? currentCategory;
+
+  bool get isLastPage{
+    if (currentCategory!.items.length < itemsPerPage) return true;
+    return currentCategory!.pagination * itemsPerPage > allProducts.length;
+  }
 
   void setLoading(bool value, {bool isProduct = false}) {
     if (!isProduct) {
@@ -65,9 +71,16 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> getAllProducts() async {
-    setLoading(true, isProduct: true);
+  void loadMoreProducts(){
+    currentCategory!.pagination++;
+    getAllProducts(canLoad: false);
+  }
 
+  Future<void> getAllProducts({canLoad = true}) async {
+    if (canLoad) {
+      setLoading(true, isProduct: true);
+    }
+    
     Map<String, dynamic> body = {
       'page': currentCategory!.pagination,
       'categoryId': currentCategory!.id,
@@ -80,7 +93,7 @@ class HomeController extends GetxController {
 
     result.when(
       success: (data) {
-        currentCategory!.items = data;
+        currentCategory!.items.addAll(data);
       },
       error: (message) {
         utilsServices.showToast(
