@@ -29,12 +29,7 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   final UtilsServices utilsServices = UtilsServices();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  final controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +79,9 @@ class _HomeTabState extends State<HomeTab> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TextFormField(
+                onChanged: (value){
+                  controller.searchTitle.value = value;
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
