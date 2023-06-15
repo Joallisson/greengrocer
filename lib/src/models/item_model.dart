@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'item_model.g.dart';
@@ -29,4 +30,9 @@ class ItemModel {
 
   Map<String, dynamic> toJson() => _$ItemModelToJson(this);
 
+
+  @override
+  String toString() {
+    return 'ItemModel(id: $id, itemName: $itemName, imgUrl: $imgUrl, unit: $unit, price: $price, description: $description)';
+  }
 }
