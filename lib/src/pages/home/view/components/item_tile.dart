@@ -54,11 +54,12 @@ class _ItemTileState extends State<ItemTile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+
                   //Imagem
                   Expanded(
                     child: Hero(
                       tag: widget.item.imgUrl,
-                      child: Image.asset(
+                      child: Image.network(
                         widget.item.imgUrl,
                         key: imageGK,
                       ),

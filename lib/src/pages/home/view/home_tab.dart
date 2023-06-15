@@ -39,6 +39,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       //App Bar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -78,6 +79,7 @@ class _HomeTabState extends State<HomeTab> {
         },
         child: Column(
           children: [
+
             //Campo de Pesquisa
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -108,7 +110,7 @@ class _HomeTabState extends State<HomeTab> {
               return Container(
                 padding: const EdgeInsets.only(left: 25),
                 height: 40,
-                child: !controller.isLoading
+                child: !controller.isCategoryLoading
                     ? ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (_, index) {
@@ -145,10 +147,10 @@ class _HomeTabState extends State<HomeTab> {
               );
             }),
 
-            //Grid
+            //Grid de Produtos
             GetBuilder<HomeController>(builder: (controller) {
               return Expanded(
-                child: !controller.isLoading
+                child: !controller.isProductLoading
                     ? GridView.builder(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         physics: const BouncingScrollPhysics(),
@@ -159,10 +161,10 @@ class _HomeTabState extends State<HomeTab> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 9 / 11.5,
                         ),
-                        itemCount: app_data.items.length,
+                        itemCount: controller.allProducts.length,
                         itemBuilder: (_, index) {
                           return ItemTile(
-                              item: app_data.items[index],
+                              item: controller.allProducts[index],
                               cartAnimationMethod: itemSelectedCartAnimations);
                         },
                       )

@@ -9,13 +9,21 @@ const int itemsPerPage = 6;
 class HomeController extends GetxController {
   final homeRepository = HomeRepository();
   final utilsServices = UtilsServices();
+  List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
-  bool isLoading = false;
+  bool isCategoryLoading = false;
+  bool isProductLoading = true;
+
   List<CategoryModel> allCategories = [];
   CategoryModel? currentCategory;
 
-  void setLoading(bool value) {
-    isLoading = value;
+  void setLoading(bool value, {bool isProduct = false}) {
+    if (!isProduct) {
+      isCategoryLoading = value;
+    } else {
+      isProductLoading = value;
+    }
+    
     update();
   }
 
@@ -29,6 +37,8 @@ class HomeController extends GetxController {
   void selectCategory(CategoryModel category) {
     currentCategory = category;
     update();
+
+    if(currentCategory!.items.isNotEmpty) return;
 
     getAllProducts();
   }
@@ -56,7 +66,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getAllProducts() async {
-    setLoading(true);
+    setLoading(true, isProduct: true);
 
     Map<String, dynamic> body = {
       'page': currentCategory!.pagination,
@@ -66,11 +76,11 @@ class HomeController extends GetxController {
 
     HomeResult<ItemModel> result = await homeRepository.getAllProducts(body);
 
-    setLoading(false);
+    setLoading(false, isProduct: true);
 
     result.when(
       success: (data) {
-        print(data);
+        currentCategory!.items = data;
       },
       error: (message) {
         utilsServices.showToast(
