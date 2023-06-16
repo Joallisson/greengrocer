@@ -6,6 +6,7 @@ import 'package:greengrocer/src/pages/home/result/home_result.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
 const int itemsPerPage = 6;
+
 class HomeController extends GetxController {
   final homeRepository = HomeRepository();
   final utilsServices = UtilsServices();
@@ -19,7 +20,7 @@ class HomeController extends GetxController {
 
   RxString searchTitle = ''.obs;
 
-  bool get isLastPage{
+  bool get isLastPage {
     if (currentCategory!.items.length < itemsPerPage) return true;
     return currentCategory!.pagination * itemsPerPage > allProducts.length;
   }
@@ -30,7 +31,7 @@ class HomeController extends GetxController {
     } else {
       isProductLoading = value;
     }
-    
+
     update();
   }
 
@@ -38,13 +39,9 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
-    debounce(
-      searchTitle, 
-      (_) {
-        update();
-      },
-      time: const Duration(milliseconds: 600)
-    );
+    debounce(searchTitle, (_) {
+      update();
+    }, time: const Duration(milliseconds: 600));
 
     getAllCategories();
   }
@@ -53,7 +50,7 @@ class HomeController extends GetxController {
     currentCategory = category;
     update();
 
-    if(currentCategory!.items.isNotEmpty) return;
+    if (currentCategory!.items.isNotEmpty) return;
 
     getAllProducts();
   }
@@ -80,7 +77,40 @@ class HomeController extends GetxController {
     );
   }
 
-  void loadMoreProducts(){
+  void filterByTitle() {
+    for (var category in allCategories) {
+      category.items.clear();
+      category.pagination = 0;
+    }
+
+    if (searchTitle.value.isEmpty) {
+      allCategories.removeAt(0);
+    } else {
+      CategoryModel? category =
+          allCategories.firstWhereOrNull((category) => category.id == '');
+
+      if (category == null) {
+        //Criar uma nova categoria com todos
+        final allProductsCategory = CategoryModel(
+          title: 'Todos',
+          id: '',
+          items: [],
+          pagination: 0,
+        );
+
+        allCategories.insert(0, allProductsCategory);
+      } else {
+        category.items.clear();
+        category.pagination = 0;
+      }
+    }
+
+    currentCategory = allCategories.first;
+    update();
+    getAllProducts();
+  }
+
+  void loadMoreProducts() {
     currentCategory!.pagination++;
     getAllProducts(canLoad: false);
   }
@@ -89,7 +119,7 @@ class HomeController extends GetxController {
     if (canLoad) {
       setLoading(true, isProduct: true);
     }
-    
+
     Map<String, dynamic> body = {
       'page': currentCategory!.pagination,
       'categoryId': currentCategory!.id,
@@ -108,6 +138,7 @@ class HomeController extends GetxController {
         utilsServices.showToast(
           message: message,
           isError: true,
+          
         );
       },
     );
