@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:greengrocer/src/config/app_data.dart';
 import 'package:greengrocer/src/models/category_model.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/home/repository/home_repository.dart';
@@ -42,7 +41,7 @@ class HomeController extends GetxController {
     debounce(
       searchTitle, 
       (_) {
-        print("Olá Mundo!");
+        update();
       },
       time: const Duration(milliseconds: 600)
     );

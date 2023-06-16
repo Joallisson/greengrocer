@@ -29,12 +29,11 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   final UtilsServices utilsServices = UtilsServices();
-  final controller = Get.find<HomeController>();
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       //App Bar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -74,33 +73,51 @@ class _HomeTabState extends State<HomeTab> {
         },
         child: Column(
           children: [
-
             //Campo de Pesquisa
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: TextFormField(
-                onChanged: (value){
-                  controller.searchTitle.value = value;
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  isDense: true,
-                  hintText: "Pesquise aqui...",
-                  hintStyle:
-                      TextStyle(color: Colors.grey.shade400, fontSize: 14),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: CustomColors.customContrastColor,
-                    size: 21,
+            GetBuilder<HomeController>(
+              builder: (controller) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: TextFormField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      controller.searchTitle.value = value;
+                    },
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        isDense: true,
+                        hintText: "Pesquise aqui...",
+                        hintStyle: TextStyle(
+                            color: Colors.grey.shade400, fontSize: 14),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: CustomColors.customContrastColor,
+                          size: 21,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(60),
+                          borderSide: const BorderSide(
+                              width: 0, style: BorderStyle.none),
+                        ),
+                        suffixIcon: controller.searchTitle.value.isNotEmpty
+                            ? IconButton(
+                                onPressed: () {
+                                  searchController.clear();
+                                  controller.searchTitle.value = '';
+                                  FocusScope.of(context).unfocus();
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  color: CustomColors.customContrastColor,
+                                  size: 21,
+                                ),
+                              )
+                            : null),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(60),
-                    borderSide:
-                        const BorderSide(width: 0, style: BorderStyle.none),
-                  ),
-                ),
-              ),
+                );
+              },
             ),
 
             //Categorias
@@ -161,11 +178,9 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         itemCount: controller.allProducts.length,
                         itemBuilder: (_, index) {
-
-                          if(((index + 1) == controller.allProducts.length) && !controller.isLastPage){
-
+                          if (((index + 1) == controller.allProducts.length) &&
+                              !controller.isLastPage) {
                             controller.loadMoreProducts();
-
                           }
 
                           return ItemTile(
