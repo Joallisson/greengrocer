@@ -39,9 +39,11 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
-    debounce(searchTitle, (_) {
-      update();
-    }, time: const Duration(milliseconds: 600));
+    debounce(
+      searchTitle,
+      (_) => filterByTitle(),
+      time: const Duration(milliseconds: 600),
+    );
 
     getAllCategories();
   }
@@ -126,6 +128,14 @@ class HomeController extends GetxController {
       'itemsPerPage': itemsPerPage
     };
 
+    if (searchTitle.value.isNotEmpty) {
+      body['title'] = searchTitle.value;
+
+      if (currentCategory!.id == '') {
+        body.remove('categoryId');
+      }
+    }
+
     HomeResult<ItemModel> result = await homeRepository.getAllProducts(body);
 
     setLoading(false, isProduct: true);
@@ -138,7 +148,6 @@ class HomeController extends GetxController {
         utilsServices.showToast(
           message: message,
           isError: true,
-          
         );
       },
     );
