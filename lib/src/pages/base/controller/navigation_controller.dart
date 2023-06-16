@@ -12,18 +12,21 @@ class NavigationController extends GetxController {
   late PageController _pageController;
   late RxInt _currentIndex;
 
+  PageController get pageController => _pageController;
+  int get currentIndex => _currentIndex.value;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
 
-    initNavigation(
+    _initNavigation(
       pageController: PageController(initialPage: NavigationTabs.home),
       currentIndex: NavigationTabs.home,
     );
   }
 
-  void initNavigation(
+  void _initNavigation(
       {required PageController pageController, required int currentIndex}) {
     _pageController = pageController;
     _currentIndex = currentIndex.obs;
