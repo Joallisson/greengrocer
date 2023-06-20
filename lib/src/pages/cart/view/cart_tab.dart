@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/cart_item_model.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/pages/cart/view/components/cart_tile.dart';
 import 'package:greengrocer/src/pages/commom_widgets/payment_dialog.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
@@ -15,15 +17,6 @@ class CartTab extends StatefulWidget {
 
 class _CartTabState extends State<CartTab> {
   final UtilsServices utilsServices = UtilsServices();
-
-  void removeItemFromCart(CartItemModel cartItem) {
-    // setState(() {
-    //   appData.cartItems.remove(cartItem);
-    //   utilsServices.showToast(
-    //       //context: context,
-    //       message: "${cartItem.item.itemName} removido(a) do carrinho");
-    // });
-  }
 
   double cartTotalPrice() {
     // double total = 0;
@@ -45,15 +38,17 @@ class _CartTabState extends State<CartTab> {
         children: [
           //Listagem de produtos do carrinho
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (_, index) {
-                return null;
-                // return CartTile(
-                //   cartItem: appData.cartItems[index],
-                //   remove: removeItemFromCart,
-                // );
+            child: GetBuilder<CartController>(
+              builder: (controller) {
+                return ListView.builder(
+                  itemCount: controller.cartItems.length,
+                  itemBuilder: (_, index) {
+                    return CartTile(
+                      cartItem: controller.cartItems[index],
+                    );
+                  },
+                );
               },
-              itemCount: 0,
             ),
           ),
 
@@ -80,13 +75,17 @@ class _CartTabState extends State<CartTab> {
                 ),
 
                 //Preço total
-                Text(
-                  utilsServices.priceToCurrency(cartTotalPrice()),
-                  style: TextStyle(
-                    fontSize: 23,
-                    color: CustomColors.customSwatchColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+                GetBuilder<CartController>(
+                  builder: (controller) {
+                    return Text(
+                      utilsServices.priceToCurrency(controller.cartTotalPrice()),
+                      style: TextStyle(
+                        fontSize: 23,
+                        color: CustomColors.customSwatchColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
                 ),
 
                 //Botão concluir pedido
@@ -109,10 +108,9 @@ class _CartTabState extends State<CartTab> {
                           );
                         } else {
                           utilsServices.showToast(
-                            //context: context,
-                            message: "Pedido não confirmado",
-                            isError: true
-                          );
+                              //context: context,
+                              message: "Pedido não confirmado",
+                              isError: true);
                         }
                       },
                       child: const Text(

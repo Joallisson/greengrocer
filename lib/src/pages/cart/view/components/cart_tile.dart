@@ -6,11 +6,9 @@ import 'package:greengrocer/src/services/utils_services.dart';
 
 class CartTile extends StatefulWidget {
   final CartItemModel cartItem;
-  final Function(CartItemModel) remove;
 
   const CartTile({
     required this.cartItem,
-    required this.remove,
     super.key,
   });
 
@@ -31,7 +29,7 @@ class _CartTileState extends State<CartTile> {
 
       child: ListTile(
         //Imagem
-        leading: Image.asset(
+        leading: Image.network(
           widget.cartItem.item.imgUrl,
           height: 60,
           width: 60,
@@ -58,14 +56,7 @@ class _CartTileState extends State<CartTile> {
           suffixText: widget.cartItem.item.unit,
           isRemovable: true,
           result: (quantity){
-            setState((){
-              widget.cartItem.quantity = quantity;
-
-              //Remover Item do carrinho
-              if(quantity == 0){
-                widget.remove(widget.cartItem);
-              }
-            });
+            setState((){});
           },
         ),
       ),
