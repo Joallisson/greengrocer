@@ -1,35 +1,34 @@
 import 'package:greengrocer/src/constants/endpoints.dart';
+import 'package:greengrocer/src/models/cart_item_model.dart';
 import 'package:greengrocer/src/pages/cart/cart_result/cart_result.dart';
 import 'package:greengrocer/src/services/http_manager.dart';
 
 class CartRepository {
   final _httpManager = HttpManager();
 
-  Future getCartItems({
+  Future<CartResult<List<CartItemModel>>> getCartItems({
     required String token,
     required String userId,
   }) async {
-    final result
-     = await _httpManager.restRequest(
-      url: Endpoints.getCartItems,
-      method: HttpMethods.post,
-      headers: {
-        'X-Parse-Session-Token': token,
-      },
-      body: {
-        'user': userId
-      }
-    );
+    final result = await _httpManager.restRequest(
+        url: Endpoints.getCartItems,
+        method: HttpMethods.post,
+        headers: {
+          'X-Parse-Session-Token': token,
+        },
+        body: {
+          'user': userId
+        });
 
     if (result['result'] != null) {
-      
-      print(result['result']);
+      List<CartItemModel> data =
+          List<Map<String, dynamic>>.from(result['result'])
+              .map(CartItemModel.fromJson)
+              .toList();
 
+      return CartResult<List<CartItemModel>>.success(data);
     } else {
-    
-      print('ocorreu um erro ao recuperar os dados do carrinho');
-      
+      return CartResult.error('Ocorreu um erro ao recuperar os dados do carrinho');
     }
-
   }
 }
