@@ -48,9 +48,11 @@ class CartRepository {
         'productId': productId,
       },
       headers: {
-        'token': token
+        'X-Parse-Session-Token': token
       }
     );
+
+    print(result['result']);
 
     if (result['result'] != null) {
       return CartResult<String>.success(result['result']['id']);

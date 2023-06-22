@@ -56,7 +56,7 @@ class _CartTabState extends State<CartTab> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.shade300,
