@@ -28,8 +28,31 @@ class CartRepository {
 
       return CartResult<List<CartItemModel>>.success(data);
     } else {
-      return CartResult.error('Ocorreu um erro ao recuperar os dados do carrinho');
+      return CartResult.error(
+          'Ocorreu um erro ao recuperar os dados do carrinho');
     }
+  }
+
+  Future<bool> changeItemQuantity({
+    required String cartItemId,
+    required String token,
+    required int quantity,
+  }) async {
+
+    final result = await _httpManager.restRequest(
+      url: Endpoints.changeItemQuantity,
+      method: HttpMethods.post,
+      body: {
+        'cartItemId': cartItemId,
+        'quantity': quantity,
+      },
+      headers: {
+        'X-Parse-Session-Token': token,
+      }
+    );
+
+    return result.isEmpty;
+
   }
 
   Future<CartResult<String>> addItemToCart({
@@ -37,20 +60,18 @@ class CartRepository {
     required String token,
     required String productId,
     required quantity,
-  }) async{
-
+  }) async {
     final result = await _httpManager.restRequest(
-      url: Endpoints.addItemToCart, 
-      method: HttpMethods.post,
-      body: {
-        'user': userId,
-        'quantity': quantity,
-        'productId': productId,
-      },
-      headers: {
-        'X-Parse-Session-Token': token
-      }
-    );
+        url: Endpoints.addItemToCart,
+        method: HttpMethods.post,
+        body: {
+          'user': userId,
+          'quantity': quantity,
+          'productId': productId,
+        },
+        headers: {
+          'X-Parse-Session-Token': token
+        });
 
     print(result['result']);
 
@@ -59,6 +80,5 @@ class CartRepository {
     } else {
       return CartResult.error('Não foi possível adicionar o item no carrinho');
     }
-
   }
 }
