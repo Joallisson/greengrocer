@@ -9,4 +9,5 @@ abstract class Endpoints{
   static const String getAllCategories = '$baseUrl/functions/get-category-list';
   static const String getAllProducts = '$baseUrl/functions/get-product-list';
   static const String getCartItems = '$baseUrl/functions/get-cart-items';
+  static const String addItemToCart = '$baseUrl/functions/add-item-to-cart';
 }
