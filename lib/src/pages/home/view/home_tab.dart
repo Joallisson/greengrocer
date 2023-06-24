@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:greengrocer/src/pages/commom_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/commom_widgets/custom_shimmer.dart';
 import 'package:greengrocer/src/pages/home/controller/home_controller.dart';
@@ -31,6 +32,8 @@ class _HomeTabState extends State<HomeTab> {
   final UtilsServices utilsServices = UtilsServices();
   final searchController = TextEditingController();
 
+  final cartController = Get.find<CartController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +50,12 @@ class _HomeTabState extends State<HomeTab> {
               onTap: () {},
               child: Badge(
                 backgroundColor: CustomColors.customContrastColor,
-                label: const Text(
-                  "2",
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+                label: Text(
+                  cartController.getCartTotalItems().toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
                 ),
                 child: AddToCartIcon(
                   key: globalKeyCartItems,
@@ -73,7 +79,6 @@ class _HomeTabState extends State<HomeTab> {
         },
         child: Column(
           children: [
-
             //Campo de Pesquisa
             GetBuilder<HomeController>(
               builder: (controller) {
@@ -168,22 +173,20 @@ class _HomeTabState extends State<HomeTab> {
               return Expanded(
                 child: !controller.isProductLoading
                     ? Visibility(
-                      visible: (controller.currentCategory?.items ?? []).isNotEmpty,
-                      replacement: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-
-                          Icon(
-                            Icons.search_off,
-                            size: 40,
-                            color: CustomColors.customSwatchColor,
-                          ),
-
-                          const Text('Não há itens para apresentar'),
-
-                        ],
-                      ),
-                      child: GridView.builder(
+                        visible: (controller.currentCategory?.items ?? [])
+                            .isNotEmpty,
+                        replacement: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 40,
+                              color: CustomColors.customSwatchColor,
+                            ),
+                            const Text('Não há itens para apresentar'),
+                          ],
+                        ),
+                        child: GridView.builder(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           physics: const BouncingScrollPhysics(),
                           gridDelegate:
@@ -195,17 +198,19 @@ class _HomeTabState extends State<HomeTab> {
                           ),
                           itemCount: controller.allProducts.length,
                           itemBuilder: (_, index) {
-                            if (((index + 1) == controller.allProducts.length) &&
+                            if (((index + 1) ==
+                                    controller.allProducts.length) &&
                                 !controller.isLastPage) {
                               controller.loadMoreProducts();
                             }
-                    
+
                             return ItemTile(
                                 item: controller.allProducts[index],
-                                cartAnimationMethod: itemSelectedCartAnimations);
+                                cartAnimationMethod:
+                                    itemSelectedCartAnimations);
                           },
                         ),
-                    )
+                      )
                     : GridView.count(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         physics: const BouncingScrollPhysics(),
