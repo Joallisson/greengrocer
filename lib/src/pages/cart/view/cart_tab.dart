@@ -31,12 +31,10 @@ class _CartTabState extends State<CartTab> {
           Expanded(
             child: GetBuilder<CartController>(
               builder: (controller) {
-
-                if(controller.cartItems.isEmpty){
+                if (controller.cartItems.isEmpty) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       Icon(
                         Icons.remove_shopping_cart,
                         size: 40,
@@ -63,7 +61,8 @@ class _CartTabState extends State<CartTab> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(30)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.shade300,
@@ -85,7 +84,8 @@ class _CartTabState extends State<CartTab> {
                 GetBuilder<CartController>(
                   builder: (controller) {
                     return Text(
-                      utilsServices.priceToCurrency(controller.cartTotalPrice()),
+                      utilsServices
+                          .priceToCurrency(controller.cartTotalPrice()),
                       style: TextStyle(
                         fontSize: 23,
                         color: CustomColors.customSwatchColor,
@@ -98,25 +98,32 @@ class _CartTabState extends State<CartTab> {
                 //Botão concluir pedido
                 SizedBox(
                   height: 50,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: CustomColors.customSwatchColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18))),
-                      onPressed: () async {
-                        bool? result = await showOrderConfirmation();
+                  child: GetBuilder<CartController>(
+                    builder: (controller) {
+                      return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: CustomColors.customSwatchColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18))),
+                          onPressed: controller.isCheckoutLoading 
+                          ?  null 
+                          : () async {
+                            bool? result = await showOrderConfirmation();
 
-                        if (result ?? false) {
-
-                          cartController.checkoutCart();
-
-                          
-                        }
-                      },
-                      child: const Text(
-                        "Concluir pedido",
-                        style: TextStyle(fontSize: 18),
-                      )),
+                            if (result ?? false) {
+                              cartController.checkoutCart();
+                            }else{
+                              utilsServices.showToast(message: 'Pedido não confirmado');
+                            }
+                          },
+                          child: controller.isCheckoutLoading
+                          ? const CircularProgressIndicator() 
+                          : const Text(
+                            "Concluir pedido",
+                            style: TextStyle(fontSize: 18),
+                          ));
+                    },
+                  ),
                 )
               ],
             ),

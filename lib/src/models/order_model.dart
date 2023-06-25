@@ -18,6 +18,8 @@ class OrderModel {
   List<CartItemModel> items;
   String status;
 
+  String qrCodeImage;
+
   @JsonKey(name: 'copiaecola')
   String copyAndPaste;
   double total;
@@ -29,9 +31,12 @@ class OrderModel {
     required this.overdueDateTime,
     required this.items,
     required this.status,
+    required this.qrCodeImage,
     required this.copyAndPaste,
-    required this.total,
+    required this.total, 
   });
+
+
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => _$OrderModelFromJson(json);
   Map<String, dynamic> totalJson() => _$OrderModelToJson(this);

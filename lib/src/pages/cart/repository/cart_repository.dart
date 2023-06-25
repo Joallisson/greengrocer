@@ -92,7 +92,7 @@ class CartRepository {
       },
     );
 
-    if (result['result']) {
+    if (result['result'] != null) {
       final order = OrderModel.fromJson(result['result']);
       return CartResult.success(order);
     } else {
