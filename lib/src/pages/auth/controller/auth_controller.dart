@@ -50,6 +50,8 @@ class AuthController extends GetxController {
     result.when(
       success: (user) {
         this.user = user;
+        update();
+        print('olha o user aqui: >>>>>>>>>>>>>>>>>> ${this.user}');
         saveTokenAndProceedToBase();
       },
       error: (message) {
