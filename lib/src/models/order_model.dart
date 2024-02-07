@@ -9,6 +9,8 @@ part 'order_model.g.dart';
 class OrderModel {
 
   String id;
+
+  @JsonKey(name: 'createdAt')
   DateTime? createdDateTime;
 
   @JsonKey(name: 'due')
@@ -41,8 +43,9 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) => _$OrderModelFromJson(json);
   Map<String, dynamic> totalJson() => _$OrderModelToJson(this);
 
+
   @override
   String toString() {
-    return 'OrderModel(id: $id, createdDateTime: $createdDateTime, overdueDateTime: $overdueDateTime, items: $items, status: $status, copyAndPaste: $copyAndPaste, total: $total)';
+    return 'OrderModel(id: $id, createdDateTime: $createdDateTime, overdueDateTime: $overdueDateTime, items: $items, status: $status, qrCodeImage: $qrCodeImage, copyAndPaste: $copyAndPaste, total: $total)';
   }
 }
