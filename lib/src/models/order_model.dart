@@ -26,6 +26,7 @@ class OrderModel {
   String copyAndPaste;
   double total;
 
+  bool get isOverDue => overdueDateTime.isBefore(DateTime.now());
 
   OrderModel({
     required this.id,

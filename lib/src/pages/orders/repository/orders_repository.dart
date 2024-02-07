@@ -10,7 +10,7 @@ class OrdersRepository {
   Future<OrdersResult<List<CartItemModel>>> getOrderItems({required String orderId, required String token}) async {
     final result = await _httpManager.restRequest(
       url: Endpoints.getOrderItems,
-      method: HttpMethods.patch,
+      method: HttpMethods.post,
       body: {
         'orderId': orderId
       },

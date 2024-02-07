@@ -24,11 +24,16 @@ class OrderTile extends StatelessWidget {
       child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: GetBuilder<OrderController>(
-            init: OrderController(),
+            init: OrderController(order),
             global: false,
             builder: (orderController) {
               return ExpansionTile(
                 //initiallyExpanded: order.status == 'pending_payment',
+                onExpansionChanged: (isOpening) {
+                  if(isOpening && order.items.isEmpty){
+                    orderController.getOrderItems();
+                  }
+                },
                 childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 title: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -44,7 +49,15 @@ class OrderTile extends StatelessWidget {
                       )
                     ]),
                 expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+                children: orderController.isLoading 
+                ? [
+                  Container(
+                    height: 80,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  )
+                ] 
+                : [
                   IntrinsicHeight(
                     child: Row(
                       children: [
@@ -100,7 +113,7 @@ class OrderTile extends StatelessWidget {
 
                   //BOTÃO DE PAGAMENTO
                   Visibility(
-                    visible: order.status == "pending_payment",
+                    visible: order.status == "pending_payment" && !order.isOverDue,
                     child: ElevatedButton.icon(
                       onPressed: () {
                         showDialog(
