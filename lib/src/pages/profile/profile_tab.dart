@@ -12,7 +12,6 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-
   final authController = Get.find<AuthController>();
 
   @override
@@ -84,6 +83,7 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<bool?> updatePassword() {
+    final currentPasswordController = TextEditingController();
     final newPasswordController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
 
@@ -116,15 +116,16 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                           ),
                         ),
-                  
+
                         //SENHA ATUAL
-                        const CustomTextField(
+                        CustomTextField(
                           isSecret: true,
                           icon: Icons.lock,
                           label: "Senha atual",
                           validator: passwordValidator,
+                          controller: currentPasswordController,
                         ),
-                  
+
                         //NOVA SENHA
                         CustomTextField(
                           isSecret: true,
@@ -133,38 +134,50 @@ class _ProfileTabState extends State<ProfileTab> {
                           validator: passwordValidator,
                           controller: newPasswordController,
                         ),
-                  
+
                         //CONFIRMAR NOVA SENHA
                         CustomTextField(
                           isSecret: true,
                           icon: Icons.lock_outline,
                           label: "Confirmar nova senha",
-                          validator: (password){
+                          validator: (password) {
                             final result = passwordValidator(password);
-                  
-                            if(result != null){
+
+                            if (result != null) {
                               return result;
                             }
-                  
-                            if(password != newPasswordController.text){
+
+                            if (password != newPasswordController.text) {
                               return 'As senhas devem ser iguais';
                             }
-                  
+
                             return null;
                           },
                         ),
-                  
+
                         //BOTÃO DE CONFIRMAÇÃO
                         SizedBox(
                           height: 45,
-                          child: ElevatedButton(
+                          child: Obx(
+                            () => ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {
-                                _formKey.currentState!.validate();
-                              },
-                              child: const Text("Atualizar")),
+                              onPressed: authController.isLoading.value
+                                  ? null
+                                  : () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        await authController.changePassword(
+                                          currentPassword: currentPasswordController.text,
+                                          newPassword: newPasswordController.text,
+                                        );
+                                      }
+                                    },
+                              child: authController.isLoading.value
+                                  ? const CircularProgressIndicator()
+                                  : const Text("Atualizar"),
+                            ),
+                          ),
                         )
                       ],
                     ),
