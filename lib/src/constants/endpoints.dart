@@ -14,4 +14,5 @@ abstract class Endpoints{
   static const String checkout = '$baseUrl/functions/checkout';
   static const String getAllOrders = '$baseUrl/functions/get-orders';
   static const String getOrderItems = '$baseUrl/functions/get-order-items';
+  static const String changePassword = '$baseUrl/functions/change-password';
 }
