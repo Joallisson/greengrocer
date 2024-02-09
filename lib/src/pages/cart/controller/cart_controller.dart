@@ -57,7 +57,7 @@ class CartController extends GetxController {
     result.when(
       success: (order) {
 
-        cartItems.clear;
+        cartItems.clear();
         update();
 
         showDialog(
