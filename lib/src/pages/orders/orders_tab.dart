@@ -18,7 +18,7 @@ class OrdersTab extends StatelessWidget {
             onRefresh: () => allOrdersController.getAllOrders(),
             child: ListView.separated(
                 padding: const EdgeInsets.all(16),
-                //physics: const BouncingScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (_, index) =>
                     OrderTile(order: allOrdersController.allOrders[index]),
                 separatorBuilder: (_, index) => const SizedBox(
