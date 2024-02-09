@@ -12,7 +12,6 @@ import 'package:greengrocer/src/pages/home/controller/home_controller.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 import 'components/category_tile.dart';
-import 'package:greengrocer/src/config/app_data.dart' as app_data;
 
 import 'components/item_tile.dart';
 
